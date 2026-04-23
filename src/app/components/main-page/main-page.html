@@ -1,0 +1,157 @@
+<div class="main-page-container">
+  <app-navbar />
+
+  <div class="urun-listesi container-fluid py-4 px-4">
+
+    <!-- Başarı / Hata mesajları -->
+    <div *ngIf="basariMesaji" class="alert alert-success mb-3">{{ basariMesaji }}</div>
+    <div *ngIf="hata" class="alert alert-danger mb-3">{{ hata }}</div>
+
+    <!-- Lisans kritik uyarı (≤3 gün) -->
+    <div *ngIf="lisansKalanGun !== null && lisansKalanGun <= 3" class="lisans-banner lisans-kritik">
+      <span class="lisans-ikon">⚠️</span>
+      <span *ngIf="lisansKalanGun > 0">
+        {{ t.lisansBitisineKalanGun.replace('{n}', lisansKalanGun + '') }}
+      </span>
+      <span *ngIf="lisansKalanGun <= 0">
+        {{ t.lisansSonaErdi }}
+      </span>
+    </div>
+
+    <!-- Kategori filtre başlığı -->
+    <div *ngIf="filtreKategoriAdi" class="d-flex align-items-center gap-3 mb-4">
+      <button class="btn-geri-kategori" (click)="kategorilereGit()">{{ t.kategorilereGit }}</button>
+      <h4 class="kategori-filtre-baslik">📂 {{ filtreKategoriAdi }}</h4>
+    </div>
+
+    <div *ngIf="yukleniyor" class="text-center text-white py-5">
+      <div class="spinner-border" role="status"></div>
+      <p class="mt-2">{{ t.urunlerYukleniyor }}</p>
+    </div>
+
+    <div class="row g-3">
+      <div class="urun-col col-12 col-sm-4 col-lg-3" *ngFor="let urun of urunler">
+        <div class="urun-card" style="cursor:pointer" (click)="urunlereGit(urun.id)">
+          <!-- Üst: Ürün Resmi -->
+          <div class="urun-card-img-wrap">
+            <img [src]="urun.kapakResimYolu | kapakResim" alt="{{ urun.urunAdi }}" class="urun-card-img" />
+          </div>
+          <!-- Alt: Ürün Bilgileri -->
+          <div class="urun-card-body">
+            <h5 class="urun-adi">{{ urun.urunAdi }}</h5>
+            <p class="urun-kategori">
+              <span class="badge-kategori">{{ getKategoriAdi(urun.kategoriId) }}</span>
+            </p>
+            <p class="urun-aciklama">{{ urun.aciklama }}</p>
+            <p class="urun-barkod">
+              <span class="barkod-label">{{ t.barkod }}:</span> {{ urun.barkod }}
+            </p>
+            <!-- Kart Butonları -->
+            <div class="urun-card-actions" *ngIf="isAdmin">
+              <button class="btn-card-duzenle" (click)="$event.stopPropagation(); duzenleAc(urun)">{{ t.duzenle }}</button>
+              <button
+                *ngIf="urun.kapakResimId"
+                class="btn-card-resim-sil"
+                (click)="$event.stopPropagation(); resimSilOnayAc(urun.kapakResimId!)"
+                title="{{ t.kapakResminSil }}">
+                {{ t.resimSil }}
+              </button>
+              <button class="btn-card-sil" (click)="$event.stopPropagation(); silOnayAc(urun.id)">{{ t.sil }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Ekle / Güncelle Modal -->
+<div class="modal-overlay" *ngIf="modalGoster" (click)="modalKapat()">
+  <div class="modal-kart modal-genis" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ duzenlemeModunda ? t.urunGuncelle : t.yeniUrunEkle }}</h4>
+
+    <!-- Yükleniyor -->
+    <div *ngIf="modalYukleniyor" class="modal-yukleniyor">
+      <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+      <span>{{ t.cevirilerYukleniyor }}</span>
+    </div>
+
+    <ng-container *ngIf="!modalYukleniyor">
+      <div class="form-group">
+        <label>{{ t.barkod }}</label>
+        <input type="text" [(ngModel)]="barkodForm" [placeholder]="t.barkodGirin" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label>{{ t.kategori }}</label>
+        <select [(ngModel)]="kategoriIdForm" class="form-input">
+          <option [ngValue]="null">{{ t.kategoriSec }}</option>
+          <option *ngFor="let k of kategoriler" [ngValue]="k.id">{{ k.name }}</option>
+        </select>
+      </div>
+
+      <table class="translation-table">
+        <thead>
+          <tr>
+            <th class="th-dil">{{ t.dil }}</th>
+            <th>{{ t.urunAdi }} *</th>
+            <th>{{ t.aciklama }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of translations; let i = index">
+            <td class="td-dil">
+              <img [src]="t.bayrakUrl" [alt]="t.language" class="tablo-bayrak" />
+              <span class="dil-kod-label">{{ t.language.toUpperCase() }}</span>
+            </td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="translations[i].urunAdi"
+                [placeholder]="'Ürün adı (' + t.language + ')'"
+                class="form-input" />
+            </td>
+            <td>
+              <textarea
+                [(ngModel)]="translations[i].aciklama"
+                [placeholder]="'Açıklama (' + t.language + ')'"
+                class="form-input"
+                rows="2"></textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="translation-hint">* En az bir dil için ürün adı girilmelidir.</p>
+    </ng-container>
+
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="modalKapat()">{{ t.iptal }}</button>
+      <button class="btn-kaydet" (click)="kaydet()">{{ duzenlemeModunda ? t.urunGuncelleBtn : t.urunKaydet }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sil Onay Modal -->
+<div class="modal-overlay" *ngIf="silOnayGoster" (click)="silOnayKapat()">
+  <div class="modal-kart" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ t.sil }}</h4>
+    <p class="sil-mesaj">{{ t.urunSilOnayAciklama }}</p>
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="silOnayKapat()">{{ t.iptal }}</button>
+      <button class="btn-sil-onay" (click)="silOnayla()">{{ t.silOnay }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Resim Sil Onay Modal -->
+<div class="modal-overlay" *ngIf="resimSilOnayGoster" (click)="resimSilOnayKapat()">
+  <div class="modal-kart" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ t.kapakResminSil }}</h4>
+    <p class="sil-mesaj">{{ t.kapakResminSilAciklama }}</p>
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="resimSilOnayKapat()">{{ t.iptal }}</button>
+      <button class="btn-sil-onay" (click)="resimSilOnayla()">{{ t.silOnay }}</button>
+    </div>
+  </div>
+</div>

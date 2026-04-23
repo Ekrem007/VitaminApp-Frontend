@@ -1,0 +1,144 @@
+<div class="detay-page-container">
+  <app-navbar />
+
+  <div class="container-fluid py-4 px-4">
+
+    <!-- Geri Butonu -->
+    <div class="mb-3">
+      <a routerLink="/anasayfa" class="btn-geri">{{ t.urunlereGit }}</a>
+    </div>
+
+    <!-- Yükleniyor -->
+    <div *ngIf="yukleniyor" class="text-center text-white py-5">
+      <div class="spinner-border" role="status"></div>
+      <p class="mt-2">{{ t.urunYukleniyor }}</p>
+    </div>
+
+    <!-- Hata -->
+    <div *ngIf="hata && !yukleniyor" class="alert alert-danger">{{ hata }}</div>
+
+    <!-- İçerik -->
+    <div *ngIf="urun && !yukleniyor" class="detay-grid">
+
+      <!-- SOL ÜST: Ürün Görseli -->
+      <div class="detay-kart sol-ust">
+        <div class="gorsel-wrap">
+          <img [src]="urun.kapakResimYolu | kapakResim" [alt]="urun.urunAdi" class="urun-gorsel" />
+        </div>
+      </div>
+
+      <!-- SAĞ ÜST: Ürün Bilgileri + Uzun Açıklamalar -->
+      <div class="detay-kart sag-ust">
+        <h2 class="detay-urun-adi">{{ urun.urunAdi }}</h2>
+
+        <div class="info-satirlar">
+          <div class="info-satir" *ngIf="getKategoriAdi()">
+            <span class="info-etiket">{{ t.kategori }}</span>
+            <span class="badge-kategori">{{ getKategoriAdi() }}</span>
+          </div>
+          <div class="info-satir" *ngIf="!getKategoriAdi()">
+            <span class="info-etiket">{{ t.kategori }}</span>
+            <span class="info-deger kategori-yok">{{ t.kategoriYok }}</span>
+          </div>
+          <div class="info-satir" *ngIf="urun.barkod">
+            <span class="info-etiket">{{ t.barkod }}</span>
+            <span class="info-deger barkod-metin">{{ urun.barkod }}</span>
+          </div>
+          <div class="info-satir" *ngIf="urun.aciklama">
+            <span class="info-etiket">{{ t.aciklama }}</span>
+            <span class="info-deger">{{ urun.aciklama }}</span>
+          </div>
+        </div>
+
+        <!-- Uzun Açıklamalar -->
+        <div *ngIf="uzunAciklamalar.length > 0" class="uzun-aciklama-bolum">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <h5 class="bolum-baslik mb-0">{{ t.detayliBilgiler }}</h5>
+              <button class="btn-tts" [class.btn-tts--aktif]="okuyorMu" (click)="ttsToggle()" [title]="okuyorMu ? t.okumayiDurdur : t.sesliOku">
+                <span *ngIf="!okuyorMu">&#128266;</span>
+                <span *ngIf="okuyorMu">&#9646;&#9646;</span>
+              </button>
+            </div>
+            <button class="btn-uzun-ekle" *ngIf="isAdmin" (click)="uzunAciklamaEkleAc()">{{ t.bilgiEkle }}</button>
+          </div>
+          <ul class="uzun-aciklama-liste">
+            <li *ngFor="let a of uzunAciklamalar" class="uzun-aciklama-item">
+              <span class="uzun-metin">{{ a.metin }}</span>
+              <div class="uzun-aksiyonlar" *ngIf="isAdmin">
+                <button class="btn-uzun-duzenle" title="Düzenle" (click)="uzunAciklamaDuzenleAc(a)">&#9998;</button>
+                <button class="btn-uzun-sil" title="Sil" (click)="uzunAciklamaSil(a)">&#10005;</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="uzunAciklamalar.length === 0" class="bos-mesaj">
+          {{ t.detayliBilgiBulunamadi }}
+          <button class="btn-uzun-ekle ms-2" *ngIf="isAdmin" (click)="uzunAciklamaEkleAc()">{{ t.bilgiEkle }}</button>
+        </div>
+      </div>
+
+      <!-- SOL ALT: Semptomlar -->
+      <div class="detay-kart sol-alt">
+        <h5 class="bolum-baslik">{{ t.ilgiliSemptomlar }}</h5>
+        <div *ngIf="semptomlar.length > 0" class="semptom-chip-listesi">
+          <span class="semptom-chip" *ngFor="let s of semptomlar">{{ s }}</span>
+        </div>
+        <div *ngIf="semptomlar.length === 0" class="bos-mesaj">
+          {{ t.semptomEklenmemis }}
+        </div>
+      </div>
+
+      <!-- SAĞ ALT: İçerik Resmi -->
+      <div class="sag-alt-resim">
+        <div class="gorsel-wrap">
+          <img [src]="urun.icerikResimYolu | icerikResim" [alt]="urun.urunAdi" class="urun-gorsel" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Uzun Açıklama Ekle / Düzenle Modal -->
+<div class="modal-overlay" *ngIf="uzunAciklamaModalGoster" (click)="uzunAciklamaEkleKapat()">
+  <div class="modal-kart modal-genis" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ uzunAciklamaDuzenlemeId ? t.detayliBilgiDuzenle : t.detayliBilgiEkle }}</h4>
+
+    <div *ngIf="modalYukleniyor" class="modal-yukleniyor">
+      <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+      <span>{{ t.cevirilerYukleniyor }}</span>
+    </div>
+
+    <table class="translation-table" *ngIf="!modalYukleniyor">
+      <thead>
+        <tr>
+          <th class="th-dil">{{ t.dil }}</th>
+          <th>{{ t.metin }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of uzunAciklamaTranslations; let i = index">
+          <td class="td-dil">
+            <img [src]="t.bayrakUrl" [alt]="t.language" class="tablo-bayrak" />
+            <span class="dil-kod-label">{{ t.language.toUpperCase() }}</span>
+          </td>
+          <td>
+            <textarea
+              [(ngModel)]="uzunAciklamaTranslations[i].metin"
+              [placeholder]="'Metin (' + t.language + ')'"
+              class="form-input"
+              rows="3"></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="translation-hint">* En az bir dil için metin girilmelidir.</p>
+
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="uzunAciklamaEkleKapat()">{{ t.iptal }}</button>
+      <button class="btn-kaydet" (click)="uzunAciklamaKaydet()">{{ t.kaydet }}</button>
+    </div>
+  </div>
+</div>

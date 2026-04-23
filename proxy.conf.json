@@ -1,0 +1,18 @@
+{
+  "/api": {
+    "target": "https://buddy-snap-proofread.ngrok-free.dev",
+    "secure": false,
+    "changeOrigin": true,
+    "headers": {
+      "ngrok-skip-browser-warning": "true"
+    }
+  },
+  "/images": {
+    "target": "https://buddy-snap-proofread.ngrok-free.dev",
+    "secure": false,
+    "changeOrigin": true,
+    "headers": {
+      "ngrok-skip-browser-warning": "true"
+    }
+  }
+}

@@ -1,0 +1,222 @@
+<div class="admin-page-container" (click)="dropdownKapat()">
+  <app-navbar />
+  <div class="container-fluid py-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h2 class="page-title">{{ t.adminPaneliBaslik }}</h2>
+      <div class="d-flex gap-2">
+        <button class="btn btn-yeni-kullanici" (click)="olusturAc()">{{ t.yeniKullanici }}</button>
+        <button class="btn btn-refresh" (click)="kullanicilariYukle()">{{ t.kullanicilariYukle }}</button>
+      </div>
+    </div>
+    <div *ngIf="hata" class="alert alert-danger">{{ hata }}</div>
+    <div *ngIf="yukleniyor" class="text-center text-white py-5">
+      <div class="spinner-border" role="status"></div>
+      <p class="mt-2">{{ t.kullanicilarYukleniyor }}</p>
+    </div>
+    <div *ngIf="!yukleniyor && !hata">
+      <div class="section-title">{{ t.kayitliKullanicilar }}</div>
+      <div class="table-wrapper">
+        <table class="admin-tablo">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{ t.ad }}</th>
+              <th>{{ t.kullaniciAdi }}</th>
+              <th>{{ t.telefon }}</th>
+              <th>{{ t.lisansBitis }}</th>
+              <th>{{ t.izinliIPler }}</th>
+              <th>{{ t.islemler }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="kullanicilar.length === 0">
+              <td colspan="7" class="text-center text-muted py-4">Kayıtlı kullanıcı bulunamadı.</td>
+            </tr>
+            <tr *ngFor="let kullanici of kullanicilar; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ kullanici.name }}</td>
+              <td>{{ kullanici.userName }}</td>
+              <td>{{ kullanici.phoneNumber || '-' }}</td>
+              <td>
+                <span *ngIf="kullanici.lisansBitis; else lisansYok" class="admin-badge-lisans">
+                  {{ kullanici.lisansBitis | date:'dd.MM.yyyy' }}
+                </span>
+                <ng-template #lisansYok><span class="admin-badge-yok">{{ t.belirsiz }}</span></ng-template>
+              </td>
+              <td>
+                <span *ngIf="kullanici.allowedIps; else ipYok" class="ip-text">{{ kullanici.allowedIps }}</span>
+                <ng-template #ipYok><span class="text-muted">-</span></ng-template>
+              </td>
+              <td>
+                <div class="islem-dropdown" (click)="$event.stopPropagation()">
+                  <button class="btn-islem-dropdown" (click)="dropdownToggle(kullanici.id)">İşlemler &#9660;</button>
+                  <ul class="dropdown-menu-islem" *ngIf="acikDropdownId === kullanici.id">
+                    <li><button (click)="guncelleAc(kullanici)">&#9998; {{ t.kullaniciGuncelle }}</button></li>
+                    <li><button (click)="lisansAc(kullanici)">&#128197; {{ t.lisansTanimla }}</button></li>
+                    <li><button (click)="sifreAc(kullanici)">&#128274; {{ t.sifreSifirla }}</button></li>
+                    <li class="dropdown-divider-islem"></li>
+                    <li><button class="dropdown-item-sil" (click)="silAc(kullanici)">&#128465; {{ t.kullaniciyiSil }}</button></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="tablo-alt">{{ t.toplamKullanici.replace('{n}', kullanicilar.length + '') }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Kullanıcı Güncelle Modal -->
+<div class="admin-overlay" *ngIf="guncelleModalGoster" (click)="guncelleKapat()">
+  <div class="admin-modal" (click)="$event.stopPropagation()">
+    <button class="admin-modal-kapat" (click)="guncelleKapat()">&#10005;</button>
+    <div class="admin-modal-ikon">&#9998;</div>
+    <h3 class="admin-modal-baslik">{{ t.kullaniciGuncelle }}</h3>
+    <p class="admin-modal-aciklama" *ngIf="guncelleSeciliKullanici">
+      <strong>{{ guncelleSeciliKullanici.name }}</strong> bilgilerini güncelleyin.
+    </p>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.adSoyad }}</label>
+      <input type="text" class="admin-input" [(ngModel)]="guncelleForm.name" [placeholder]="t.adSoyad"
+        [disabled]="guncelleYukleniyor || !!guncelleBasari" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.kullaniciAdi }}</label>
+      <input type="text" class="admin-input" [(ngModel)]="guncelleForm.userName" [placeholder]="t.kullaniciAdi"
+        [disabled]="guncelleYukleniyor || !!guncelleBasari" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.telefon }}</label>
+      <input type="text" class="admin-input" [(ngModel)]="guncelleForm.phoneNumber" [placeholder]="t.telefon"
+        [disabled]="guncelleYukleniyor || !!guncelleBasari" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">Şirket Adı</label>
+      <input type="text" class="admin-input" [(ngModel)]="guncelleForm.sirketAdi" placeholder="Şirket adı (opsiyonel)"
+        [disabled]="guncelleYukleniyor || !!guncelleBasari" />
+    </div>
+    <div *ngIf="guncelleHata" class="admin-hata">{{ guncelleHata }}</div>
+    <div *ngIf="guncelleBasari" class="admin-basari">{{ guncelleBasari }}</div>
+    <button class="admin-kaydet-btn" (click)="guncelleKaydet()" [disabled]="guncelleYukleniyor || !!guncelleBasari">
+      <span *ngIf="guncelleYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ guncelleYukleniyor ? t.kaydediliyor : t.kaydet }}
+    </button>
+  </div>
+</div>
+
+<!-- Lisans Tanımlama Modal -->
+<div class="admin-overlay" *ngIf="lisansModalGoster" (click)="lisansKapat()">
+  <div class="admin-modal" (click)="$event.stopPropagation()">
+    <button class="admin-modal-kapat" (click)="lisansKapat()">&#10005;</button>
+    <div class="admin-modal-ikon">&#128197;</div>
+    <h3 class="admin-modal-baslik">{{ t.lisansTanimla }}</h3>
+    <p class="admin-modal-aciklama" *ngIf="lisansSeciliKullanici">
+      <strong>{{ lisansSeciliKullanici.name }}</strong> ({{ lisansSeciliKullanici.userName }}) kullanıcısına lisans bitiş tarihi tanımlıyorsunuz.
+    </p>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.lisansBitisTarihi }}</label>
+      <input type="date" class="admin-input" [(ngModel)]="lisansBitisInput" [disabled]="lisansYukleniyor" />
+    </div>
+    <div *ngIf="lisansHata" class="admin-hata">{{ lisansHata }}</div>
+    <div *ngIf="lisansBasari" class="admin-basari">{{ lisansBasari }}</div>
+    <button class="admin-kaydet-btn" (click)="lisansKaydet()" [disabled]="lisansYukleniyor || !!lisansBasari">
+      <span *ngIf="lisansYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ lisansYukleniyor ? t.kaydediliyor : t.kaydet }}
+    </button>
+  </div>
+</div>
+
+<!-- Kullanıcı Silme Modal -->
+<div class="admin-overlay" *ngIf="silModalGoster" (click)="silKapat()">
+  <div class="admin-modal" (click)="$event.stopPropagation()">
+    <button class="admin-modal-kapat" (click)="silKapat()">&#10005;</button>
+    <div class="admin-modal-ikon">⚠️</div>
+    <h3 class="admin-modal-baslik">{{ t.kullaniciyiSil }}</h3>
+    <p class="admin-modal-aciklama" *ngIf="silSeciliKullanici">
+      <strong>{{ silSeciliKullanici.name }}</strong> ({{ silSeciliKullanici.userName }}) {{ t.kullaniciSilOnay }}
+    </p>
+    <div *ngIf="silHata" class="admin-hata">{{ silHata }}</div>
+    <div class="sil-butonlar">
+      <button class="admin-iptal-btn" (click)="silKapat()" [disabled]="silYukleniyor">{{ t.iptal }}</button>
+      <button class="admin-sil-btn" (click)="silOnayla()" [disabled]="silYukleniyor">
+        <span *ngIf="silYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+        {{ silYukleniyor ? t.siliniyor : t.evetSil }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Şifre Sıfırlama Modal -->
+<div class="admin-overlay" *ngIf="sifreModalGoster" (click)="sifreKapat()">
+  <div class="admin-modal" (click)="$event.stopPropagation()">
+    <button class="admin-modal-kapat" (click)="sifreKapat()">&#10005;</button>
+    <div class="admin-modal-ikon">&#128274;</div>
+    <h3 class="admin-modal-baslik">{{ t.sifreSifirla2 }}</h3>
+    <p class="admin-modal-aciklama" *ngIf="sifreSeciliKullanici">
+      <strong>{{ sifreSeciliKullanici.name }}</strong> ({{ sifreSeciliKullanici.userName }}) kullanıcısı için yeni şifre belirleyin.
+    </p>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.yeniSifre }}</label>
+      <div class="admin-input-wrap">
+        <input [type]="sifreGoster ? 'text' : 'password'" class="admin-input" [(ngModel)]="yeniSifre"
+          [placeholder]="t.yeniSifre" [disabled]="sifreYukleniyor || !!sifreBasari" autocomplete="new-password" />
+        <button type="button" class="sifre-goz-btn" (click)="sifreGoster = !sifreGoster" tabindex="-1">
+          {{ sifreGoster ? '&#128584;' : '&#128065;' }}
+        </button>
+      </div>
+    </div>
+    <div *ngIf="sifreHata" class="admin-hata">{{ sifreHata }}</div>
+    <div *ngIf="sifreBasari" class="admin-basari">{{ sifreBasari }}</div>
+    <button class="admin-kaydet-btn" (click)="sifreSifirla()" [disabled]="sifreYukleniyor || !!sifreBasari">
+      <span *ngIf="sifreYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ sifreYukleniyor ? t.sifirlanIyor : t.sifreSifirla2 }}
+    </button>
+  </div>
+</div>
+
+<!-- Kullanıcı Oluşturma Modal -->
+<div class="admin-overlay" *ngIf="olusturModalGoster" (click)="olusturKapat()">
+  <div class="admin-modal" (click)="$event.stopPropagation()">
+    <button class="admin-modal-kapat" (click)="olusturKapat()">&#10005;</button>
+    <div class="admin-modal-ikon">&#128100;</div>
+    <h3 class="admin-modal-baslik">{{ t.yeniKullaniciOlustur }}</h3>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.adSoyad }}</label>
+      <input type="text" class="admin-input" [(ngModel)]="olusturForm.name" [placeholder]="t.adSoyad"
+        [disabled]="olusturYukleniyor || !!olusturBasari" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.kullaniciAdi }}</label>
+      <input type="text" class="admin-input" [(ngModel)]="olusturForm.userName" [placeholder]="t.kullaniciAdi"
+        [disabled]="olusturYukleniyor || !!olusturBasari" autocomplete="off" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.sifre }}</label>
+      <div class="admin-input-wrap">
+        <input [type]="olusturSifreGoster ? 'text' : 'password'" class="admin-input" [(ngModel)]="olusturForm.password"
+          [placeholder]="t.sifre" [disabled]="olusturYukleniyor || !!olusturBasari" autocomplete="new-password" />
+        <button type="button" class="sifre-goz-btn" (click)="olusturSifreGoster = !olusturSifreGoster" tabindex="-1">
+          {{ olusturSifreGoster ? '&#128584;' : '&#128065;' }}
+        </button>
+      </div>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">{{ t.telefonOpsiyonel }}</label>
+      <input type="text" class="admin-input" [(ngModel)]="olusturForm.phoneNumber" [placeholder]="t.telefonOpsiyonel"
+        [disabled]="olusturYukleniyor || !!olusturBasari" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-label">Şirket Adı</label>
+      <input type="text" class="admin-input" [(ngModel)]="olusturForm.sirketAdi" placeholder="Şirket adı (opsiyonel)"
+        [disabled]="olusturYukleniyor || !!olusturBasari" />
+    </div>
+    <div *ngIf="olusturHata" class="admin-hata">{{ olusturHata }}</div>
+    <div *ngIf="olusturBasari" class="admin-basari">{{ olusturBasari }}</div>
+    <button class="admin-kaydet-btn" (click)="olusturKaydet()" [disabled]="olusturYukleniyor || !!olusturBasari">
+      <span *ngIf="olusturYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ olusturYukleniyor ? t.olusturuluyor : t.yeniKullaniciOlustur }}
+    </button>
+  </div>
+</div>

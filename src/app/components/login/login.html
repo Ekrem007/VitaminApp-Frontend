@@ -1,0 +1,71 @@
+<div class="login-page">
+  <div class="login-kart">
+    <!-- Logo / Başlık -->
+    <div class="login-logo">
+      <span class="login-logo-ikon">💊</span>
+      <h1 class="login-baslik">Vitamin<span class="login-baslik-slash">\</span>Pharma</h1>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="girisYap()" #loginForm="ngForm" autocomplete="off">
+
+      <div class="form-group">
+        <label class="form-label" for="kullaniciAdi">{{ t.kullaniciAdi }}</label>
+        <div class="input-wrap">
+          <span class="input-ikon">&#128100;</span>
+          <input
+            id="kullaniciAdi"
+            type="text"
+            class="form-input"
+            [(ngModel)]="kullaniciAdi"
+            name="kullaniciAdi"
+            [placeholder]="t.kullaniciAdiGirin"
+            autocomplete="new-password"
+            [disabled]="yukleniyor"
+            (focus)="$any($event.target).removeAttribute('readonly')"
+            readonly
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sifre">{{ t.sifre }}</label>
+        <div class="input-wrap">
+          <span class="input-ikon">&#128274;</span>
+          <input
+            id="sifre"
+            [type]="sifreGoster ? 'text' : 'password'"
+            class="form-input"
+            [(ngModel)]="sifre"
+            name="sifre"
+            [placeholder]="t.sifreniziGirin"
+            autocomplete="new-password"
+            [disabled]="yukleniyor"
+            (focus)="$any($event.target).removeAttribute('readonly')"
+            readonly
+            required
+          />
+          <button
+            type="button"
+            class="sifre-goster-btn"
+            (click)="sifreGoster = !sifreGoster"
+            [title]="sifreGoster ? t.sifreyiGizle : t.sifreyiGoster">
+            {{ sifreGoster ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="hata-mesaj" *ngIf="hata">{{ hata }}</div>
+
+      <button type="submit" class="btn-giris" [disabled]="yukleniyor">
+        <span *ngIf="!yukleniyor">{{ t.girisYap }}</span>
+        <span *ngIf="yukleniyor" class="d-flex align-items-center justify-content-center gap-2">
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          {{ t.girisYapiliyor }}
+        </span>
+      </button>
+
+    </form>
+  </div>
+</div>

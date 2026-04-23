@@ -1,0 +1,304 @@
+.category-page-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.kategori-adi-link {
+  cursor: pointer;
+  color: rgb(30, 150, 8);
+  font-weight: 600;
+  text-decoration: underline dotted;
+  transition: color 0.15s;
+}
+
+.kategori-adi-link:hover {
+  color: rgb(20, 100, 5);
+}
+
+.page-title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+}
+
+.btn-add {
+  background-color: #fff;
+  color: rgb(30, 150, 8);
+  font-weight: 700;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-add:hover {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+/* Tablo */
+.table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.kategori-tablo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.kategori-tablo thead tr {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+.kategori-tablo th {
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.kategori-tablo td {
+  padding: 12px 18px;
+  color: #333;
+  border-bottom: 1px solid #e8f5e9;
+}
+
+.kategori-tablo tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.kategori-tablo tbody tr:hover {
+  background-color: #f1faf1;
+}
+
+.islem-col {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-duzenle {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-duzenle:hover {
+  background-color: rgb(22, 120, 5);
+}
+
+.btn-sil {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-sil:hover {
+  background-color: #b71c1c;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-kart {
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.modal-genis {
+  max-width: 720px;
+}
+
+/* Translation Tablosu */
+.translation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8px;
+}
+
+.translation-table thead tr {
+  background-color: #f1faf1;
+  border-bottom: 2px solid #c8e6c9;
+}
+
+.translation-table th {
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a5c0a;
+  text-align: left;
+  letter-spacing: 0.3px;
+}
+
+.th-dil {
+  width: 80px;
+}
+
+.translation-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid #e8f5e9;
+  vertical-align: middle;
+}
+
+.td-dil {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px;
+}
+
+.tablo-bayrak {
+  width: 24px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.dil-kod-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #555;
+}
+
+.translation-table .form-input {
+  padding: 7px 10px;
+  font-size: 0.88rem;
+}
+
+.translation-hint {
+  font-size: 0.78rem;
+  color: #999;
+  margin: 4px 0 0;
+}
+
+.modal-yukleniyor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+  font-size: 0.9rem;
+  padding: 20px 0;
+}
+
+.modal-baslik {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #1a5c0a;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #c8e6c9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+.form-input:focus {
+  border-color: rgb(30, 150, 8);
+}
+
+.modal-butonlar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn-iptal {
+  background-color: #ececec;
+  color: #444;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-iptal:hover {
+  background-color: #d5d5d5;
+}
+
+.btn-kaydet {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-kaydet:hover {
+  background-color: rgb(22, 120, 5);
+}
+
+.sil-mesaj {
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.btn-sil-onay {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-sil-onay:hover {
+  background-color: #b71c1c;
+}

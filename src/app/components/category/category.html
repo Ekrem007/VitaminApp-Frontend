@@ -1,0 +1,118 @@
+<div class="category-page-container">
+  <app-navbar />
+
+  <div class="container-fluid py-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h2 class="page-title">{{ t.kategoriler }}</h2>
+      <button *ngIf="isAdmin" class="btn btn-add" (click)="yeniKategoriAc()">{{ t.yeniKategori }}</button>
+    </div>
+
+    <!-- Başarı mesajı -->
+    <div *ngIf="basariMesaji" class="alert alert-success">{{ basariMesaji }}</div>
+
+    <!-- Hata mesajı -->
+    <div *ngIf="hata" class="alert alert-danger">{{ hata }}</div>
+
+    <!-- Yükleniyor -->
+    <div *ngIf="yukleniyor" class="text-center text-white py-5">
+      <div class="spinner-border" role="status"></div>
+      <p class="mt-2">{{ t.kategorilerYukleniyor }}</p>
+    </div>
+
+    <!-- Tablo -->
+    <div *ngIf="!yukleniyor && !hata" class="table-wrapper">
+      <table class="kategori-tablo">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>{{ t.kategoriAdi }}</th>
+            <th>{{ t.aciklama }}</th>
+            <th>{{ t.urunSayisi }}</th>
+            <th *ngIf="isAdmin">{{ t.islemler }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let kategori of kategoriler; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <span class="kategori-adi-link" (click)="urunlereGit(kategori.id)">{{ kategori.name || '-' }}</span>
+            </td>
+            <td>{{ kategori.description || '-' }}</td>
+            <td>{{ urunSayilari.get(kategori.id) ?? 0 }}</td>
+            <td class="islem-col" *ngIf="isAdmin">
+              <button class="btn-duzenle" (click)="duzenleAc(kategori)">{{ t.duzenle }}</button>
+              <button class="btn-sil" (click)="silOnayAc(kategori.id)">{{ t.sil }}</button>
+            </td>
+          </tr>
+          <tr *ngIf="kategoriler.length === 0">
+            <td colspan="5" class="text-center">{{ t.henuzKategoriEklenmemis }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Ekle / Düzenle Modal -->
+<div class="modal-overlay" *ngIf="modalGoster" (click)="modalKapat()">
+  <div class="modal-kart modal-genis" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ duzenlemeModunda ? t.kategoriDuzenle : t.yeniKategoriEkle }}</h4>
+
+    <!-- Yükleniyor -->
+    <div *ngIf="modalYukleniyor" class="modal-yukleniyor">
+      <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+      <span>{{ t.cevirilerYukleniyor }}</span>
+    </div>
+
+    <table class="translation-table" *ngIf="!modalYukleniyor">
+      <thead>
+        <tr>
+          <th class="th-dil">{{ t.dil }}</th>
+          <th>{{ t.kategoriAdi }} *</th>
+          <th>{{ t.aciklama }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of translations; let i = index">
+          <td class="td-dil">
+            <img [src]="t.bayrakUrl" [alt]="t.language" class="tablo-bayrak" />
+            <span class="dil-kod-label">{{ t.language.toUpperCase() }}</span>
+          </td>
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="translations[i].kategoriAdi"
+              [placeholder]="'Kategori adı (' + t.language + ')'"
+              class="form-input" />
+          </td>
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="translations[i].kategoriAciklama"
+              [placeholder]="'Açıklama (' + t.language + ')'"
+              class="form-input" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="translation-hint">* En az bir dil için kategori adı girilmelidir.</p>
+
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="modalKapat()">{{ t.iptal }}</button>
+      <button class="btn-kaydet" (click)="kaydet()">{{ duzenlemeModunda ? t.urunGuncelleBtn : t.kaydet }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sil Onay Modal -->
+<div class="modal-overlay" *ngIf="silOnayGoster" (click)="silOnayKapat()">
+  <div class="modal-kart" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ t.sil }}</h4>
+    <p class="sil-mesaj">{{ t.kategoriSilOnay }}</p>
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="silOnayKapat()">{{ t.iptal }}</button>
+      <button class="btn-sil-onay" (click)="silOnayla()">{{ t.silOnay }}</button>
+    </div>
+  </div>
+</div>

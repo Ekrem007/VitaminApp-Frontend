@@ -1,0 +1,393 @@
+.main-page-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: rgb(37, 181, 10);
+}
+
+.lisans-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 10px;
+  padding: 10px 18px;
+  color: #fff;
+  font-size: 0.97rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.lisans-banner.lisans-uyari {
+  background: rgba(255, 200, 0, 0.22);
+  border-color: rgba(255, 200, 0, 0.7);
+}
+
+.lisans-banner.lisans-kritik {
+  background: rgba(220, 38, 38, 0.25);
+  border-color: rgba(220, 38, 38, 0.7);
+  animation: lisans-pulse 2s infinite;
+}
+
+@keyframes lisans-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+.lisans-ikon {
+  font-size: 1.2rem;
+}
+
+.btn-geri-kategori {
+  background: rgba(255,255,255,0.2);
+  border: 2px solid #fff;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-geri-kategori:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.kategori-filtre-baslik {
+  color: #fff;
+  font-weight: 700;
+  margin: 0;
+}
+
+.urun-listesi {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Telefon – 3 ürün/satır, küçük kartlar (< 480px) */
+@media (max-width: 479px) {
+  .urun-col {
+    flex: 0 0 auto;
+    width: 33.333333%;
+    max-width: 33.333333%;
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .urun-listesi.container-fluid {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .urun-listesi .row {
+    --bs-gutter-x: 8px;
+    --bs-gutter-y: 8px;
+  }
+
+  .urun-card-img-wrap {
+    padding: 4px;
+  }
+
+  .urun-card-img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .urun-card-body {
+    padding: 6px 8px;
+    gap: 3px;
+  }
+
+  .urun-adi {
+    font-size: 0.75rem;
+  }
+
+  .urun-aciklama,
+  .urun-barkod {
+    display: none;
+  }
+
+  .badge-kategori {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+  }
+
+  .urun-card-actions {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-top: 6px;
+  }
+
+  .btn-card-duzenle,
+  .btn-card-sil,
+  .btn-card-resim-sil {
+    padding: 3px 6px;
+    font-size: 0.68rem;
+  }
+}
+
+/* TV dikey mod – 3 ürün/satır, aşağı scroll (480-767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .urun-col {
+    flex: 0 0 auto;
+    width: 33.333333%;
+    max-width: 33.333333%;
+  }
+
+  .urun-card-img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .urun-card-body {
+    padding: 10px;
+  }
+
+  .urun-adi {
+    font-size: 0.88rem;
+  }
+
+  .urun-aciklama {
+    font-size: 0.78rem;
+  }
+}
+
+.urun-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.urun-card-img-wrap {
+  width: 100%;
+  background-color: #e8f5e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-bottom: 1px solid #d0ead0;
+}
+
+.urun-card-img {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+}
+
+.urun-card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.urun-adi {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a5c0a;
+  margin: 0;
+}
+
+.badge-kategori {
+  display: inline-block;
+  background-color: rgb(37, 181, 10);
+  color: #fff;
+  font-size: 0.72rem;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.urun-aciklama {
+  font-size: 0.85rem;
+  color: #444;
+  margin: 0;
+}
+
+.urun-barkod {
+  font-size: 0.78rem;
+  color: #777;
+  margin: 0;
+}
+
+.barkod-label {
+  font-weight: 600;
+  color: #555;
+}
+
+/* Kart Alt Butonları */
+.urun-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+  justify-content: flex-end;
+}
+
+.btn-card-duzenle {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-card-duzenle:hover {
+  background-color: rgb(22, 120, 5);
+}
+
+.btn-card-sil {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-card-sil:hover {
+  background-color: #b71c1c;
+}
+
+.btn-card-resim-sil {
+  background-color: #f57c00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-card-resim-sil:hover {
+  background-color: #e65100;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-kart {
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.modal-baslik {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #1a5c0a;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 9px 13px;
+  border: 1.5px solid #c8e6c9;
+  border-radius: 8px;
+  font-size: 0.94rem;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  border-color: rgb(30, 150, 8);
+}
+
+.modal-butonlar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.btn-iptal {
+  background-color: #ececec;
+  color: #444;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-iptal:hover {
+  background-color: #d5d5d5;
+}
+
+.btn-kaydet {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-kaydet:hover {
+  background-color: rgb(22, 120, 5);
+}
+
+.sil-mesaj {
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.btn-sil-onay {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-sil-onay:hover {
+  background-color: #b71c1c;
+}
+

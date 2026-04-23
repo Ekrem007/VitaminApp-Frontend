@@ -1,0 +1,438 @@
+.admin-page-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.page-title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.btn-refresh {
+  background-color: #fff;
+  color: rgb(30, 150, 8);
+  font-weight: 700;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-refresh:hover {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+.btn-yeni-kullanici {
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-yeni-kullanici:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.section-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+}
+
+.table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  overflow: visible;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.admin-tablo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.admin-tablo thead tr {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+.admin-tablo thead tr th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.admin-tablo thead tr th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.admin-tablo th {
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.admin-tablo td {
+  padding: 12px 18px;
+  color: #333;
+  border-bottom: 1px solid #e8f5e9;
+  vertical-align: middle;
+}
+
+.admin-tablo tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-tablo tbody tr:hover {
+  background-color: #f1faf1;
+}
+
+.admin-badge-lisans {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(30, 150, 8, 0.15);
+  color: rgb(20, 110, 5);
+  border: 1px solid rgba(30, 150, 8, 0.3);
+}
+
+.admin-badge-yok {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(150, 150, 150, 0.15);
+  color: #777;
+  border: 1px solid rgba(150, 150, 150, 0.3);
+}
+
+.ip-text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #1565c0;
+}
+
+.tablo-alt {
+  text-align: right;
+  color: #888;
+  font-size: 0.82rem;
+  padding: 10px 18px;
+  border-top: 1px solid #e8f5e9;
+}
+
+/* Lisans Tanımla Butonu */
+.btn-lisans-tani {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: rgb(22, 120, 5);
+  border: 2px solid rgb(30, 150, 8);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.18s, color 0.18s;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.btn-lisans-tani:hover {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+/* İşlemler Dropdown */
+.islem-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-islem-dropdown {
+  background: #fff;
+  color: rgb(22, 120, 5);
+  border: 2px solid rgb(30, 150, 8);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.btn-islem-dropdown:hover {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+.dropdown-menu-islem {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  min-width: 180px;
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  z-index: 9998;
+}
+
+.dropdown-menu-islem li button {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 9px 16px;
+  font-size: 0.88rem;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown-menu-islem li button:hover {
+  background: #f1faf1;
+}
+
+.dropdown-item-sil {
+  color: #c0392b !important;
+}
+
+.dropdown-item-sil:hover {
+  background: #fff5f5 !important;
+}
+
+.dropdown-divider-islem {
+  border-top: 1px solid #eee;
+  margin: 4px 0;
+}
+
+/* Silme Modal Butonları */
+.sil-butonlar {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.admin-iptal-btn {
+  flex: 1;
+  background: #f0f0f0;
+  color: #444;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.admin-iptal-btn:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.admin-sil-btn {
+  flex: 1;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-sil-btn:hover:not(:disabled) {
+  background: #c0392b;
+}
+
+.admin-sil-btn:disabled,
+.admin-iptal-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Modal Overlay */
+.admin-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.admin-modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 36px 32px 28px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.admin-modal-kapat {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+}
+
+.admin-modal-kapat:hover {
+  color: #333;
+}
+
+.admin-modal-ikon {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.admin-modal-baslik {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.admin-modal-aciklama {
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.admin-form-group {
+  margin-bottom: 16px;
+}
+
+.admin-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.admin-input {
+  width: 100%;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  color: #333;
+}
+
+.admin-input:focus {
+  border-color: rgb(30, 150, 8);
+}
+
+.admin-input-wrap {
+  position: relative;
+}
+
+.admin-input-wrap .admin-input {
+  padding-right: 44px;
+}
+
+.sifre-goz-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.admin-hata {
+  background: #fff0f0;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  margin-bottom: 14px;
+}
+
+.admin-basari {
+  background: #f0fff0;
+  color: rgb(22, 120, 5);
+  border: 1px solid #b2dfb2;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  margin-bottom: 14px;
+}
+
+.admin-kaydet-btn {
+  width: 100%;
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-kaydet-btn:hover:not(:disabled) {
+  background-color: rgb(22, 120, 5);
+}
+
+.admin-kaydet-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

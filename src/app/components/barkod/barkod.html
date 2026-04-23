@@ -1,0 +1,40 @@
+<div class="barkod-page-container">
+  <app-navbar />
+
+  <div class="barkod-merkez">
+    <div class="barkod-kart">
+      <div class="barkod-ikon">&#128247;</div>
+      <h2 class="barkod-baslik">Barkod Okut</h2>
+      <p class="barkod-aciklama">Barkodu okutun veya 13 haneli kodu girin</p>
+
+      <div class="input-wrap">
+        <input
+          #barkodInput
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          [(ngModel)]="barkod"
+          (ngModelChange)="onBarkodGiris()"
+          [disabled]="araniyor"
+          placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"
+          class="barkod-input"
+          maxlength="13"
+          autocomplete="off"
+        />
+        <div class="barkod-progress">
+          <div class="barkod-progress-bar" [style.width.%]="(barkod.length / 13) * 100"></div>
+        </div>
+        <span class="barkod-sayac">{{ barkod.length }} / 13</span>
+      </div>
+
+      <div *ngIf="araniyor" class="araniyor-mesaj">
+        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+        Ürün aranıyor...
+      </div>
+
+      <div *ngIf="hata" class="hata-mesaj">
+        {{ hata }}
+      </div>
+    </div>
+  </div>
+</div>

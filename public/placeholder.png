@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#e8f5e9" rx="12"/>
+  <rect x="70" y="55" width="60" height="60" rx="8" fill="#25b50a" opacity="0.3"/>
+  <ellipse cx="100" cy="85" rx="22" ry="22" fill="#25b50a" opacity="0.6"/>
+  <rect x="85" y="75" width="30" height="8" rx="4" fill="#fff"/>
+  <rect x="92" y="68" width="8" height="30" rx="4" fill="#fff"/>
+  <text x="100" y="145" font-family="Arial" font-size="12" fill="#555" text-anchor="middle">Ürün Resmi</text>
+</svg>

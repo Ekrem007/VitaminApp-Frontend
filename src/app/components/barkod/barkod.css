@@ -1,0 +1,113 @@
+.barkod-page-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.barkod-merkez {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 70px);
+  padding: 24px;
+}
+
+.barkod-kart {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+}
+
+.barkod-ikon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+}
+
+.barkod-baslik {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a5c0a;
+  margin-bottom: 8px;
+}
+
+.barkod-aciklama {
+  color: #777;
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+}
+
+.input-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.barkod-input {
+  width: 100%;
+  font-size: 1.6rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.15em;
+  text-align: center;
+  border: 2px solid #c8e6c9;
+  border-radius: 12px;
+  padding: 16px 12px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  color: #1a5c0a;
+  background: #f9fffe;
+}
+
+.barkod-input:focus {
+  border-color: #2e7d32;
+  background: #fff;
+}
+
+.barkod-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.barkod-progress {
+  height: 4px;
+  background: #e8f5e9;
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.barkod-progress-bar {
+  height: 100%;
+  background: #2e7d32;
+  border-radius: 2px;
+  transition: width 0.1s;
+}
+
+.barkod-sayac {
+  display: block;
+  font-size: 0.82rem;
+  color: #aaa;
+  margin-top: 6px;
+  text-align: right;
+}
+
+.araniyor-mesaj {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 16px;
+}
+
+.hata-mesaj {
+  margin-top: 16px;
+  background: #fdecea;
+  color: #c62828;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.92rem;
+  font-weight: 500;
+}

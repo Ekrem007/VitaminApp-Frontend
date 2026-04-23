@@ -1,0 +1,478 @@
+.detay-page-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.btn-tts {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #2e7d32;
+  background: transparent;
+  color: #2e7d32;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1;
+  padding: 0;
+}
+
+.btn-tts:hover {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.btn-tts--aktif {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.btn-geri {
+  display: inline-block;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  transition: background-color 0.2s;
+}
+
+.btn-geri:hover {
+  background: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+/* 2x2 grid */
+.detay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.detay-kart {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.13);
+  padding: 28px;
+}
+
+/* Sol Üst */
+.sol-ust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gorsel-wrap {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.urun-gorsel {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.resim-sil-wrap {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.btn-resim-sil {
+  background: none;
+  border: 1px solid #e53935;
+  color: #e53935;
+  border-radius: 6px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-resim-sil:hover {
+  background: #e53935;
+  color: #fff;
+}
+
+/* Sağ Üst */
+.detay-urun-adi {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #1a5c0a;
+  margin-bottom: 18px;
+}
+
+.info-satirlar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.info-satir {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-etiket {
+  min-width: 80px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.5px;
+  padding-top: 2px;
+}
+
+.info-deger {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.badge-kategori {
+  background-color: #e8f5e9;
+  color: rgb(30, 150, 8);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1px solid #c8e6c9;
+}
+
+.kategori-yok {
+  color: #bbb;
+  font-style: italic;
+}
+
+.barkod-metin {
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  background: #f5f5f5;
+  padding: 2px 10px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+
+/* Uzun Açıklamalar */
+.bolum-baslik {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a5c0a;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e8f5e9;
+}
+
+.uzun-aciklama-bolum {
+  margin-top: 8px;
+}
+
+.uzun-aciklama-liste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uzun-aciklama-item {
+  background: #f9fef9;
+  border-left: 4px solid rgb(30, 150, 8);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  color: #333;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.uzun-metin {
+  flex: 1;
+}
+
+.uzun-aksiyonlar {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn-uzun-duzenle {
+  background: none;
+  border: 1.5px solid #c8e6c9;
+  border-radius: 6px;
+  color: rgb(30, 150, 8);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 3px 8px;
+  line-height: 1;
+  transition: background-color 0.15s;
+}
+
+.btn-uzun-duzenle:hover {
+  background-color: #e8f5e9;
+}
+
+.btn-uzun-sil {
+  background: none;
+  border: 1.5px solid #ffcdd2;
+  border-radius: 6px;
+  color: #e53935;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 3px 8px;
+  line-height: 1;
+  transition: background-color 0.15s;
+}
+
+.btn-uzun-sil:hover {
+  background-color: #ffebee;
+}
+
+/* Sol Alt: Semptomlar */
+.sol-alt {}
+
+.semptom-chip-listesi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.semptom-chip {
+  background-color: #e8f5e9;
+  color: #1a5c0a;
+  border: 1.5px solid #c8e6c9;
+  border-radius: 30px;
+  padding: 6px 16px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* Sağ Alt */
+.sag-alt {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sag-alt-resim {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.bos-mesaj {
+  color: #bbb;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.btn-uzun-ekle {
+  background-color: #fff;
+  color: rgb(30, 150, 8);
+  border: 2px solid rgb(30, 150, 8);
+  border-radius: 8px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-uzun-ekle:hover {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-kart {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.modal-baslik {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a5c0a;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #c8e6c9;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: rgb(30, 150, 8);
+}
+
+.modal-butonlar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-iptal {
+  background: transparent;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #666;
+  transition: background-color 0.2s;
+}
+
+.btn-iptal:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-kaydet {
+  background-color: rgb(30, 150, 8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.btn-kaydet:hover:not(:disabled) {
+  background-color: rgb(22, 120, 5);
+}
+
+.btn-kaydet:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Translation table (uzun açıklama modal) */
+.modal-genis {
+  max-width: 700px;
+}
+
+.translation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8px;
+}
+
+.translation-table thead tr {
+  background-color: #f1faf1;
+}
+
+.translation-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.translation-table td {
+  padding: 8px 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #e8f5e9;
+}
+
+.th-dil, .td-dil {
+  width: 80px;
+  white-space: nowrap;
+}
+
+.td-dil {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 14px;
+}
+
+.tablo-bayrak {
+  width: 28px;
+  height: auto;
+  border-radius: 3px;
+}
+
+.dil-kod-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #555;
+}
+
+.translation-table .form-input {
+  width: 100%;
+  min-width: 320px;
+}
+
+.translation-hint {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin: 4px 0 0 0;
+}
+
+@media (max-width: 768px) {
+  .detay-grid {
+    grid-template-columns: 1fr;
+  }
+}

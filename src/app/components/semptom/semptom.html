@@ -1,0 +1,229 @@
+<div class="semptom-page-container">
+  <app-navbar />
+
+  <div class="container-fluid py-4 px-4">
+
+    <!-- Başlık Bar -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h2 class="page-title">{{ t.semptomlar }}</h2>
+      <div class="d-flex gap-2">
+        <button *ngIf="isAdmin" class="btn-tablo" (click)="tablGosterToggle()">
+          {{ tablGoster ? t.semptomTablosunuKapat : t.semptomTablosunuAc }}
+        </button>
+        <button *ngIf="isAdmin" class="btn-semptom-ekle" (click)="semptomEkleAc()">{{ t.uruneSemptomEkle }}</button>
+        <button *ngIf="isAdmin" class="btn-add" (click)="yeniSemptomAc()">{{ t.yeniSemptom }}</button>
+      </div>
+    </div>
+
+    <div *ngIf="basariMesaji" class="alert alert-success">{{ basariMesaji }}</div>
+    <div *ngIf="hata" class="alert alert-danger">{{ hata }}</div>
+
+    <div *ngIf="yukleniyor" class="text-center text-white py-5">
+      <div class="spinner-border" role="status"></div>
+      <p class="mt-2">{{ t.semptomlarYukleniyor }}</p>
+    </div>
+
+    <!-- Semptom Seçim Alanı -->
+    <div *ngIf="!yukleniyor" class="secim-panel mb-4">
+
+      <!-- Sol: Arama + Liste -->
+      <div class="secim-liste-bolumu">
+        <div class="secim-liste-baslik">
+          <span class="secim-baslik-yazi">{{ t.tumSemptomlar }}</span>
+          <span class="toplam-sayi">{{ semptomlar.length }} {{ t.semptomSayisi }}</span>
+        </div>
+        <div class="arama-wrap">
+          <input
+            type="text"
+            [(ngModel)]="aramaMetni"
+          [placeholder]="t.semptomAra"
+            class="arama-input" />
+          <span class="arama-ikon">🔍</span>
+        </div>
+        <div class="semptom-liste-scroll">
+          <div
+            *ngFor="let semptom of filtrelenmis"
+            class="semptom-satir"
+            [class.satir-secili]="secilenSemptomIds.has(semptom.id)"
+            (click)="semptomSec(semptom.id)">
+            <div class="satir-kontrol" [class.kontrol-secili]="secilenSemptomIds.has(semptom.id)">
+              <span *ngIf="secilenSemptomIds.has(semptom.id)">✓</span>
+            </div>
+            <span class="satir-metin">{{ semptom.aciklama }}</span>
+          </div>
+          <div *ngIf="filtrelenmis.length === 0" class="liste-bos">
+            <span *ngIf="aramaMetni">{{ t.aramaSonucuBulunamadi }}</span>
+            <span *ngIf="!aramaMetni">{{ t.henuzSemptomEklenmemis }}</span>
+          </div>
+        </div>
+
+        <div class="aksiyon-bar-alt">
+          <button
+            class="btn-analiz"
+            [disabled]="secilenSemptomIds.size === 0 || analizYukleniyor"
+            (click)="analizEt()">
+            <span *ngIf="!analizYukleniyor">🔍 {{ t.analizEt }}</span>
+            <span *ngIf="analizYukleniyor">
+              <span class="spinner-border spinner-border-sm me-1" role="status"></span> {{ t.analizEdiliyor }}
+            </span>
+          </button>
+          <button class="btn-temizle" *ngIf="secilenSemptomIds.size > 0" (click)="secimiTemizle()">
+            {{ t.secilenleriTemizle }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Yönetim Tablosu (toggle) -->
+    <div *ngIf="tablGoster && !yukleniyor" class="table-wrapper">
+      <table class="semptom-tablo">
+        <thead>
+          <tr>
+            <th style="width:50px">#</th>
+            <th>{{ t.aciklama }}</th>
+            <th class="islem-th">{{ t.islemler }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let semptom of semptomlar; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ semptom.aciklama }}</td>
+            <td class="islem-col">
+              <button class="btn-duzenle" (click)="duzenleAc(semptom)">{{ t.duzenle }}</button>
+              <button class="btn-sil" (click)="silOnayAc(semptom.id)">{{ t.sil }}</button>
+            </td>
+          </tr>
+          <tr *ngIf="semptomlar.length === 0">
+            <td colspan="3" class="text-center">{{ t.henuzSemptomEklenmemis }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- Ekle / Düzenle Modal -->
+<div class="modal-overlay" *ngIf="modalGoster" (click)="modalKapat()">
+  <div class="modal-kart modal-genis" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ duzenlemeModunda ? t.semptomDuzenle : t.yeniSemptomEkle }}</h4>
+
+    <!-- Yükleniyor -->
+    <div *ngIf="modalYukleniyor" class="modal-yukleniyor">
+      <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+      <span>{{ t.cevirilerYukleniyor }}</span>
+    </div>
+
+    <table class="translation-table" *ngIf="!modalYukleniyor">
+      <thead>
+        <tr>
+          <th class="th-dil">{{ t.dil }}</th>
+          <th>{{ t.semptomAciklamasi }} *</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of translations; let i = index">
+          <td class="td-dil">
+            <img [src]="t.bayrakUrl" [alt]="t.language" class="tablo-bayrak" />
+            <span class="dil-kod-label">{{ t.language.toUpperCase() }}</span>
+          </td>
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="translations[i].aciklama"
+              [placeholder]="'Açıklama (' + t.language + ')'"
+              class="form-input" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="translation-hint" *ngIf="!modalYukleniyor">* En az bir dil için açıklama girilmelidir.</p>
+
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="modalKapat()">{{ t.iptal }}</button>
+      <button class="btn-kaydet" (click)="kaydet()">{{ duzenlemeModunda ? t.urunGuncelleBtn : t.kaydet }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sil Onay Modal -->
+<div class="modal-overlay" *ngIf="silOnayGoster" (click)="silOnayKapat()">
+  <div class="modal-kart" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">{{ t.semptomSil }}</h4>
+    <p class="sil-mesaj">{{ t.semptomSilOnay }}</p>
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="silOnayKapat()">{{ t.iptal }}</button>
+      <button class="btn-sil-onay" (click)="silOnayla()">{{ t.silOnay }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ürüne Semptom Ekle Modal -->
+<div class="modal-overlay" *ngIf="semptomEkleModalGoster" (click)="semptomEkleKapat()">
+  <div class="modal-kart" (click)="$event.stopPropagation()">
+    <h4 class="modal-baslik">Ürüne Semptom Ekle</h4>
+    <div class="form-group">
+      <label>Ürün *</label>
+      <select [(ngModel)]="semptomEkleForm.urunId" class="form-input">
+        <option [ngValue]="null">-- Ürün seçin --</option>
+        <option *ngFor="let u of urunler" [ngValue]="u.id">{{ u.urunAdi }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Semptom *</label>
+      <select [(ngModel)]="semptomEkleForm.semptomId" class="form-input">
+        <option [ngValue]="null">-- Semptom seçin --</option>
+        <option *ngFor="let s of semptomlar" [ngValue]="s.id">{{ s.aciklama }}</option>
+      </select>
+    </div>
+    <div class="modal-butonlar">
+      <button class="btn-iptal" (click)="semptomEkleKapat()">{{ t.iptal }}</button>
+      <button class="btn-kaydet"
+        [disabled]="!semptomEkleForm.urunId || !semptomEkleForm.semptomId"
+        (click)="semptomEkleKaydet()">{{ t.ekle }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Analiz Sonuç Modal -->
+<div class="modal-overlay" *ngIf="analizModalGoster" (click)="analizModalKapat()">
+  <div class="modal-kart analiz-modal-kart" (click)="$event.stopPropagation()">
+    <div class="analiz-modal-baslik">
+      <h4 class="modal-baslik mb-0">
+        <span *ngIf="onerilenUrunler.length > 0">✅ {{ t.onerilenUrunler }} ({{ onerilenUrunler.length }})</span>
+        <span *ngIf="onerilenUrunler.length === 0">❌ Eşleşen ürün bulunamadı</span>
+      </h4>
+      <button class="analiz-modal-kapat" (click)="analizModalKapat()">✕</button>
+    </div>
+    <div class="analiz-modal-icerik">
+      <div *ngIf="onerilenUrunler.length === 0" class="bos-sonuc">
+        Seçilen semptomlara eşleşen herhangi bir ürün bulunamadı.
+      </div>
+      <div *ngIf="onerilenUrunler.length > 0">
+        <div *ngFor="let grup of onerilenUrunlerGruplu" class="analiz-kategori-grubu">
+          <div class="analiz-kategori-baslik">
+            <span class="analiz-kategori-ikon">📂</span>
+            <span>{{ grup.kategoriAdi }}</span>
+            <span class="analiz-kategori-sayi">{{ grup.urunler.length }}</span>
+          </div>
+          <div class="analiz-urun-serit">
+            <div class="analiz-urun-serit-item" *ngFor="let urun of grup.urunler">
+              <div class="sonuc-kart sonuc-kart-tiklanabilir" (click)="navigateToUrun(urun.id)">
+                <div class="sonuc-kart-img">
+                  <img [src]="urun.kapakResimYolu | kapakResim" [alt]="urun.urunAdi" />
+                </div>
+                <div class="sonuc-kart-body">
+                  <h6 class="sonuc-urun-adi">{{ urun.urunAdi }}</h6>
+                  <p class="sonuc-aciklama">{{ urun.aciklama }}</p>
+                  <p class="sonuc-barkod" *ngIf="urun.barkod">Barkod: {{ urun.barkod }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

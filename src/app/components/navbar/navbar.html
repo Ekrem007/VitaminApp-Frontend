@@ -1,0 +1,236 @@
+<nav class="navbar navbar-expand-lg vitamin-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" (click)="$event.preventDefault(); lisansGoster()" style="cursor:pointer">
+      <span class="brand-icon">💊</span> {{ sirketAdi }}
+    </a>
+
+    <!-- Dil Bayrakları -->
+    <div class="dil-bayraklar d-flex align-items-center gap-1 ms-3">
+      <button
+        *ngFor="let dil of diller"
+        class="bayrak-btn"
+        [class.bayrak-aktif]="aktifDil === dil.kod"
+        [title]="dil.ad"
+        (click)="dilSec(dil.kod)">
+        <img [src]="dil.bayrakUrl" [alt]="dil.ad" class="bayrak-img" />
+      </button>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Menüyü aç/kapat">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown" *ngIf="isAdmin">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            Ürünler
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end vitamin-dropdown">
+            <li>
+              <a class="dropdown-item" routerLink="/anasayfa">
+                {{ t.tumUrunler }}
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" routerLink="/anasayfa" [queryParams]="{ekle: '1'}">
+                {{ t.urunEkle }}
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="#" (click)="$event.preventDefault(); resimModalAc()">
+                {{ t.urunResmiEkle }}
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" *ngIf="!isAdmin">
+          <a class="nav-link" routerLink="/anasayfa" routerLinkActive="active">{{ t.urunler }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/semptomlar" routerLinkActive="active">{{ t.semptomlar }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/kategoriler" routerLinkActive="active">{{ t.kategoriler }}</a>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-barkod-nav" (click)="barkodAc()">{{ t.barkodTara }}</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-iletisim-nav" (click)="iletisimAc()">{{ t.iletisim }}</button>
+        </li>
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link btn-admin-nav" routerLink="/admin-panel" routerLinkActive="active">{{ t.adminPaneli }}</a>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-cikis-nav" (click)="cikisAc()">{{ t.cikisYap }}</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Çıkış Doğrulama Modal -->
+<div class="barkod-overlay" *ngIf="cikisModalGoster" (click)="cikisKapat()">
+  <div class="barkod-modal" (click)="$event.stopPropagation()">
+    <button class="barkod-modal-kapat" (click)="cikisKapat()">&#10005;</button>
+    <div class="barkod-modal-ikon">&#128274;</div>
+    <h3 class="barkod-modal-baslik">{{ t.cikisYapBaslik }}</h3>
+    <p class="barkod-modal-aciklama">{{ t.cikisDogrulamaAciklama }}</p>
+
+    <div class="resim-form-group">
+      <label class="resim-label">{{ t.kullaniciAdi }}</label>
+      <input
+        type="text"
+        class="barkod-input barkod-input-readonly"
+        [value]="cikisKullaniciAdi"
+        readonly
+      />
+    </div>
+
+    <div class="resim-form-group">
+      <label class="resim-label">{{ t.sifre }}</label>
+      <div style="position:relative">
+        <input
+          [type]="cikirSifreGoster ? 'text' : 'password'"
+          class="barkod-input"
+          [(ngModel)]="cikirSifre"
+          [placeholder]="t.sifreniz"
+          autocomplete="new-password"
+          [disabled]="cikisYukleniyor"
+          (focus)="$any($event.target).removeAttribute('readonly')"
+          readonly
+        />
+        <button
+          type="button"
+          class="sifre-goster-btn"
+          (click)="cikirSifreGoster = !cikirSifreGoster"
+          tabindex="-1">
+          {{ cikirSifreGoster ? '🙈' : '👁️' }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="cikisHata" class="barkod-hata">{{ cikisHata }}</div>
+
+    <button class="resim-yukle-btn" (click)="cikisOnayla()" [disabled]="cikisYukleniyor">
+      <span *ngIf="cikisYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ cikisYukleniyor ? t.cikisYapiliyor : t.cikisYapBaslik }}
+    </button>
+  </div>
+</div>
+
+<!-- Barkod Modal -->
+<div class="barkod-overlay" *ngIf="barkodModalGoster" (click)="barkodKapat()">
+  <div class="barkod-modal" (click)="$event.stopPropagation()">
+    <button class="barkod-modal-kapat" (click)="barkodKapat()">&#10005;</button>
+    <div class="barkod-modal-ikon">&#128247;</div>
+    <h3 class="barkod-modal-baslik">Barkod Tara</h3>
+    <p class="barkod-modal-aciklama">{{ t.barkodAciklama }}</p>
+
+    <div class="barkod-input-wrap">
+      <input
+        #barkodInput
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        [(ngModel)]="barkod"
+        (ngModelChange)="onBarkodGiris()"
+        [disabled]="araniyor"
+        placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"
+        class="barkod-input"
+        maxlength="13"
+        autocomplete="off"
+      />
+      <div class="barkod-progress">
+        <div class="barkod-progress-bar" [style.width.%]="(barkod.length / 13) * 100"></div>
+      </div>
+      <span class="barkod-sayac">{{ barkod.length }} / 13</span>
+    </div>
+
+    <div *ngIf="araniyor" class="barkod-araniyor">
+      <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+      Ürün aranıyor...
+    </div>
+
+    <div *ngIf="hata" class="barkod-hata">{{ hata }}</div>
+  </div>
+</div>
+
+<!-- Resim Yükleme Modal -->
+<div class="barkod-overlay" *ngIf="resimModalGoster" (click)="resimModalKapat()">
+  <div class="resim-modal" (click)="$event.stopPropagation()">
+    <button class="barkod-modal-kapat" (click)="resimModalKapat()">&#10005;</button>
+    <div class="barkod-modal-ikon">🖼️</div>
+    <h3 class="barkod-modal-baslik">Ürün Resmi Ekle</h3>
+
+    <!-- Ürün Seçimi -->
+    <div class="resim-form-group">
+      <label class="resim-label">Ürün</label>
+      <select [(ngModel)]="seciliUrunId" class="resim-select">
+        <option [ngValue]="null">-- Ürün seçin --</option>
+        <option *ngFor="let u of urunler" [ngValue]="u.id">{{ u.urunAdi }}</option>
+      </select>
+    </div>
+
+    <!-- Resim Tipi -->
+    <div class="resim-form-group">
+      <label class="resim-label">Resim Tipi</label>
+      <div class="resim-tip-grup">
+        <label class="resim-tip-secim" [class.aktif]="seciliTip === ResimTipi.Kapak">
+          <input type="radio" [value]="ResimTipi.Kapak" [(ngModel)]="seciliTip" />
+          📷 Kapak
+        </label>
+        <label class="resim-tip-secim" [class.aktif]="seciliTip === ResimTipi.Icerik">
+          <input type="radio" [value]="ResimTipi.Icerik" [(ngModel)]="seciliTip" />
+          📄 İçerik
+        </label>
+      </div>
+    </div>
+
+    <!-- Dosya Seçimi -->
+    <div class="resim-form-group">
+      <label class="resim-label">Resim Dosyası</label>
+      <label class="resim-dosya-alani">
+        <input type="file" accept="image/*" (change)="onDosyaSec($event)" style="display:none" />
+        <span *ngIf="!seciliDosya">📁 Dosya seçmek için tıklayın</span>
+        <span *ngIf="seciliDosya" class="resim-dosya-adi">✅ {{ seciliDosya.name }}</span>
+      </label>
+    </div>
+
+    <!-- Önizleme -->
+    <div class="resim-onizleme-wrap" *ngIf="dosyaOnizleme">
+      <img [src]="dosyaOnizleme" alt="Önizleme" class="resim-onizleme" />
+    </div>
+
+    <!-- Hata / Başarı -->
+    <div *ngIf="resimHata" class="barkod-hata">{{ resimHata }}</div>
+    <div *ngIf="resimBasari" class="resim-basari">{{ resimBasari }}</div>
+
+    <!-- Yükle Butonu -->
+    <button class="resim-yukle-btn" (click)="resimYukle()" [disabled]="resimYukleniyor">
+      <span *ngIf="resimYukleniyor" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      {{ resimYukleniyor ? 'Yükleniyor...' : 'Yükle' }}
+    </button>
+  </div>
+</div>
+
+<!-- İletişim Modal -->
+<div class="barkod-overlay" *ngIf="iletisimModalGoster" (click)="iletisimKapat()">
+  <div class="barkod-modal" (click)="$event.stopPropagation()">
+    <button class="barkod-modal-kapat" (click)="iletisimKapat()">&#10005;</button>
+    <h3 class="barkod-modal-baslik">{{ t.iletisimBaslik }}</h3>
+    <div class="resim-form-group">
+      <label class="resim-label">{{ t.ad }}</label>
+      <input type="text" class="barkod-input barkod-input-readonly" value="Ekrem Arda Uğur" readonly />
+    </div>
+    <div class="resim-form-group">
+      <label class="resim-label">{{ t.telefon }}</label>
+      <input type="text" class="barkod-input barkod-input-readonly" value="+90 543 916 80 93" readonly />
+    </div>
+  </div>
+</div>
