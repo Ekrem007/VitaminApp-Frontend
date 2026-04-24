@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IDataResult } from '../Models/result.model';
+import { CacheService } from './cache.service';
 
 interface TokenPayload {
   nameid: string;
@@ -21,7 +22,7 @@ export class AuthService {
   private readonly TOKEN_KEY = 'vp_token';
   private readonly SERVER_OFFSET_KEY = 'vp_time_offset';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cache: CacheService) {}
 
   login(kullaniciAdi: string, sifre: string): Observable<IDataResult<string>> {
     return this.http.post<IDataResult<string>>(`${environment.apiUrl}/api/Auth/login`, { UserName: kullaniciAdi, Password: sifre }).pipe(
@@ -42,6 +43,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.SERVER_OFFSET_KEY);
+    this.cache.clear();
   }
 
   getToken(): string | null {

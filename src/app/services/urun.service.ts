@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Urun, CreateUrunDto, UrunUpdateDto } from '../Models/UrunDtos/urun.model';
 import { environment } from '../../environments/environment';
 import { IDataResult, IResult } from '../Models/result.model';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +14,24 @@ export class UrunService {
   private baseUrl = `${environment.apiUrl}/api/Urun`;
   private uzunAciklamaUrl = `${environment.apiUrl}/api/urunUzunAciklama`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cache: CacheService) {}
 
   getAll(lang = 'tr'): Observable<IDataResult<Urun[]>> {
-    return this.http.get<IDataResult<Urun[]>>(`${this.baseUrl}/getAll?lang=${lang}`);
+    const key = `urun_all_${lang}`;
+    const cached = this.cache.get<IDataResult<Urun[]>>(key);
+    if (cached) return of(cached);
+    return this.http.get<IDataResult<Urun[]>>(`${this.baseUrl}/getAll?lang=${lang}`).pipe(
+      tap(res => { if (res?.success) this.cache.set(key, res); })
+    );
   }
 
   getByCategoryId(kategoriId: number, lang = 'tr'): Observable<IDataResult<Urun[]>> {
-    return this.http.get<IDataResult<Urun[]>>(`${this.baseUrl}/getByCategoryId/${kategoriId}?lang=${lang}`);
+    const key = `urun_cat_${kategoriId}_${lang}`;
+    const cached = this.cache.get<IDataResult<Urun[]>>(key);
+    if (cached) return of(cached);
+    return this.http.get<IDataResult<Urun[]>>(`${this.baseUrl}/getByCategoryId/${kategoriId}?lang=${lang}`).pipe(
+      tap(res => { if (res?.success) this.cache.set(key, res); })
+    );
   }
 
   getById(id: number, lang = 'tr'): Observable<IDataResult<Urun>> {

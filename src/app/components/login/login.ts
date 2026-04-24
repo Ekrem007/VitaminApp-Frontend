@@ -19,6 +19,7 @@ export class LoginComponent {
   private langService = inject(LangService);
 
   constructor() {
+    this.ipCheckService.stop();
     this.authService.logout();
   }
 
@@ -53,7 +54,13 @@ export class LoginComponent {
       },
       error: (err: any) => {
         this.yukleniyor = false;
-        this.hata = err.status === 401 ? this.t.kullaniciAdiVeyaSifreHatali : this.t.girisSirasindaHata;
+        if (err.status === 401) {
+          this.hata = this.t.kullaniciAdiVeyaSifreHatali;
+        } else if (err.error?.message) {
+          this.hata = err.error.message;
+        } else {
+          this.hata = this.t.girisSirasindaHata;
+        }
       }
     });
   }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Kategori, KategoriListDto, CreateCategoryDto } from '../Models/KategoriDtos/kategori.model';
 import { environment } from '../../environments/environment';
 import { IDataResult, IResult } from '../Models/result.model';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,15 @@ import { IDataResult, IResult } from '../Models/result.model';
 export class KategoriService {
   private baseUrl = `${environment.apiUrl}/api/Category`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cache: CacheService) {}
 
   getAll(lang = 'tr'): Observable<IDataResult<KategoriListDto[]>> {
-    return this.http.get<IDataResult<KategoriListDto[]>>(`${this.baseUrl}/getall?lang=${lang}`);
+    const key = `kat_all_${lang}`;
+    const cached = this.cache.get<IDataResult<KategoriListDto[]>>(key);
+    if (cached) return of(cached);
+    return this.http.get<IDataResult<KategoriListDto[]>>(`${this.baseUrl}/getall?lang=${lang}`).pipe(
+      tap(res => { if (res?.success) this.cache.set(key, res); })
+    );
   }
 
   getById(id: number, lang = 'tr'): Observable<IDataResult<Kategori>> {
