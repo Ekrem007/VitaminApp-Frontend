@@ -156,6 +156,29 @@ export class UrunDetayComponent implements OnInit, OnDestroy {
       };
     }
   }
+  icerikResimSil(): void {
+    if (!this.urun?.icerikResimId) return;
+    Swal.fire({
+      title: 'İçerik Resmi Silinsin mi?',
+      text: 'Bu işlem geri alınamaz.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sil',
+      cancelButtonText: 'İptal',
+      confirmButtonColor: '#dc3545'
+    }).then(result => {
+      if (!result.isConfirmed) return;
+      this.urunService.resimSil(this.urun!.icerikResimId!).subscribe({
+        next: () => {
+          this.urun!.icerikResimId = null;
+          this.urun!.icerikResimYolu = null;
+          Swal.fire({ icon: 'success', title: 'Resim silindi', timer: 1500, showConfirmButton: false });
+        },
+        error: () => Swal.fire({ icon: 'error', title: 'Resim silinemedi' })
+      });
+    });
+  }
+
   uzunAciklamaEkleAc(): void {
     this.uzunAciklamaDuzenlemeId = null;
     this.uzunAciklamaTranslations = DILLER.map(d => ({ language: d.kod, bayrakUrl: d.bayrakUrl, metin: '' }));

@@ -97,6 +97,7 @@ export interface UiTranslations {
   okumayiDurdur: string;
   ilgiliSemptomlar: string;
   semptomEklenmemis: string;
+  icerikResmiSil: string;
   metin: string;
   kategorilerYukleniyor: string;
   yeniKategori: string;
@@ -242,6 +243,7 @@ export const UI_TRANSLATIONS: Record<UiLang, UiTranslations> = {
     okumayiDurdur: 'Okumayı Durdur',
     ilgiliSemptomlar: 'İlgili Semptomlar',
     semptomEklenmemis: 'Semptom eklenmemiş',
+    icerikResmiSil: 'İçerik Resmini Sil',
     metin: 'Metin',
     kategorilerYukleniyor: 'Kategoriler yükleniyor...',
     yeniKategori: 'Yeni Kategori',
@@ -385,6 +387,7 @@ export const UI_TRANSLATIONS: Record<UiLang, UiTranslations> = {
     okumayiDurdur: 'Stop Reading',
     ilgiliSemptomlar: 'Related Symptoms',
     semptomEklenmemis: 'No symptoms added',
+    icerikResmiSil: 'Delete Content Image',
     metin: 'Text',
     kategorilerYukleniyor: 'Loading categories...',
     yeniKategori: 'New Category',
@@ -528,6 +531,7 @@ export const UI_TRANSLATIONS: Record<UiLang, UiTranslations> = {
     okumayiDurdur: 'Остановить чтение',
     ilgiliSemptomlar: 'Связанные симптомы',
     semptomEklenmemis: 'Симптомы не добавлены',
+    icerikResmiSil: 'Удалить изображение состава',
     metin: 'Текст',
     kategorilerYukleniyor: 'Загрузка категорий...',
     yeniKategori: 'Новая категория',
@@ -671,6 +675,7 @@ export const UI_TRANSLATIONS: Record<UiLang, UiTranslations> = {
     okumayiDurdur: 'Vorlesen stoppen',
     ilgiliSemptomlar: 'Verwandte Symptome',
     semptomEklenmemis: 'Keine Symptome hinzugefügt',
+    icerikResmiSil: 'Inhaltsbild löschen',
     metin: 'Text',
     kategorilerYukleniyor: 'Kategorien werden geladen...',
     yeniKategori: 'Neue Kategorie',
@@ -814,6 +819,7 @@ export const UI_TRANSLATIONS: Record<UiLang, UiTranslations> = {
     okumayiDurdur: 'Zatrzymaj czytanie',
     ilgiliSemptomlar: 'Powiązane objawy',
     semptomEklenmemis: 'Brak dodanych objawów',
+    icerikResmiSil: 'Usuń zdjęcie zawartości',
     metin: 'Tekst',
     kategorilerYukleniyor: 'Wczytywanie kategorii...',
     yeniKategori: 'Nowa kategoria',

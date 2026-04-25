@@ -94,6 +94,9 @@
         <div class="gorsel-wrap">
           <img [src]="urun.icerikResimYolu | icerikResim" [alt]="urun.urunAdi" class="urun-gorsel" />
         </div>
+        <div *ngIf="isAdmin && urun.icerikResimId" class="text-center mt-2">
+          <button class="btn-resim-sil" (click)="icerikResimSil()">{{ t.icerikResmiSil }}</button>
+        </div>
       </div>
 
     </div>

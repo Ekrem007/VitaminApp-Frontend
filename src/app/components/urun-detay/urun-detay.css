@@ -246,6 +246,23 @@
   background-color: #ffebee;
 }
 
+.btn-resim-sil {
+  background: none;
+  border: 1.5px solid #ffcdd2;
+  border-radius: 8px;
+  color: #e53935;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 5px 14px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.btn-resim-sil:hover {
+  background-color: #ffebee;
+  color: #b71c1c;
+}
+
 /* Sol Alt: Semptomlar */
 .sol-alt {}
 
