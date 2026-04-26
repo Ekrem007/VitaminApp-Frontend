@@ -328,7 +328,7 @@ export class SemptomComponent implements OnInit, OnDestroy {
       if (!gruplar.has(adi)) gruplar.set(adi, []);
       gruplar.get(adi)!.push(urun);
     }
-    return Array.from(gruplar.entries()).map(([kategoriAdi, urunler]) => ({ kategoriAdi, urunler }));
+    return Array.from(gruplar.entries()).map(([kategoriAdi, urunler]) => ({ kategoriAdi, urunler: [...urunler].reverse() }));
   }
 
   private basariGoster(mesaj: string): void {
