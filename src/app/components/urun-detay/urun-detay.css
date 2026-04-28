@@ -282,6 +282,13 @@
   font-weight: 500;
 }
 
+.semptom-chip--secili {
+  background-color: #ffebee;
+  color: #c62828;
+  border-color: #ef9a9a;
+  font-weight: 700;
+}
+
 /* Sağ Alt */
 .sag-alt {
   min-height: 140px;

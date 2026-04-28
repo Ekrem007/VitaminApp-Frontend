@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, switchMap } from 'rxjs';
 import { NavbarComponent } from '../navbar/navbar';
 import { UrunService } from '../../services/urun.service';
 import { KategoriService } from '../../services/kategori.service';
@@ -31,9 +31,11 @@ export class UrunDetayComponent implements OnInit, OnDestroy {
   yukleniyor = true;
   hata: string | null = null;
   basariMesaji: string | null = null;
+  analizdekiSemptomlar: string[] = [];
 
   private urunId!: number;
   private langSub!: Subscription;
+  private paramSub!: Subscription;
 
   get t() { return this.langService.t; }
 
@@ -58,22 +60,34 @@ export class UrunDetayComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) { this.hata = 'Geçersiz ürün ID.'; this.yukleniyor = false; return; }
-    this.urunId = id;
+
+    const analizKaydi = sessionStorage.getItem('semptom_analiz_durumu');
+    if (analizKaydi) {
+      try {
+        const durum = JSON.parse(analizKaydi);
+        this.analizdekiSemptomlar = durum.secilenSemptomAciklamalar ?? [];
+      } catch { /* bozuk veri */ }
+    }
 
     this.kategoriService.getAll(this.langService.aktifDil).subscribe({
       next: (res) => { this.kategoriler = res.data; }
     });
 
-    this.langSub = this.langService.aktifDil$.subscribe(lang => {
-      this.kategoriService.getAll(lang).subscribe({ next: (res) => { this.kategoriler = res.data; } });
-      this.urunYukle(lang);
+    this.paramSub = this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (!id) { this.hata = 'Geçersiz ürün ID.'; this.yukleniyor = false; return; }
+      this.urunId = id;
+      this.langSub?.unsubscribe();
+      this.langSub = this.langService.aktifDil$.subscribe(lang => {
+        this.kategoriService.getAll(lang).subscribe({ next: (res) => { this.kategoriler = res.data; } });
+        this.urunYukle(lang);
+      });
     });
   }
 
   ngOnDestroy(): void {
     this.langSub?.unsubscribe();
+    this.paramSub?.unsubscribe();
   }
 
   getKategoriAdi(): string | null {

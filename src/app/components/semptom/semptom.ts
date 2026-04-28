@@ -203,7 +203,8 @@ export class SemptomComponent implements OnInit, OnDestroy {
   private analizDurumunuKaydet(): void {
     sessionStorage.setItem(this.ANALIZ_KEY, JSON.stringify({
       onerilenUrunler: this.onerilenUrunler,
-      secilenSemptomIds: Array.from(this.secilenSemptomIds)
+      secilenSemptomIds: Array.from(this.secilenSemptomIds),
+      secilenSemptomAciklamalar: this.secilenSemptomlar.map(s => s.aciklama ?? '').filter(a => a)
     }));
   }
 

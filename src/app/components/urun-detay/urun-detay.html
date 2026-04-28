@@ -82,7 +82,10 @@
       <div class="detay-kart sol-alt">
         <h5 class="bolum-baslik">{{ t.ilgiliSemptomlar }}</h5>
         <div *ngIf="semptomlar.length > 0" class="semptom-chip-listesi">
-          <span class="semptom-chip" *ngFor="let s of semptomlar">{{ s }}</span>
+          <span
+            class="semptom-chip"
+            [class.semptom-chip--secili]="analizdekiSemptomlar.includes(s)"
+            *ngFor="let s of semptomlar">{{ s }}</span>
         </div>
         <div *ngIf="semptomlar.length === 0" class="bos-mesaj">
           {{ t.semptomEklenmemis }}
