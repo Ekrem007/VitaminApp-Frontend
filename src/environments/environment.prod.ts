@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://ekrem0707-001-site1.rtempurl.com'
+  apiUrl: 'https://api.vitaminapp.online'
   //apiUrl: 'https://localhost:7092'
 };
    
