@@ -145,6 +145,7 @@
 
   .urun-adi {
     font-size: 0.88rem;
+    min-height: 6em;
   }
 
   .urun-aciklama {
@@ -191,6 +192,7 @@
   font-weight: 700;
   color: #1a5c0a;
   margin: 0;
+  min-height: 4.5em;
 }
 
 .badge-kategori {
